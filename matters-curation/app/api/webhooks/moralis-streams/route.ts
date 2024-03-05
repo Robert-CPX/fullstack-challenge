@@ -1,6 +1,5 @@
 import { Web3 } from 'web3'
 import { headers } from 'next/headers'
-import { parseLogs } from '@/lib/parser'
 
 /**
  * A webhook for Moralis Streams, which listens for Curation contract events, triggered by the Moralis Stream API.
@@ -20,7 +19,9 @@ export async function POST(req: Request) {
 
   const generatedSignature = Web3.utils.sha3(body + secret)
   if (generatedSignature !== providedSignature) throw new Error("Invalid Signature")
-  const tx = parseLogs(body)
-  console.log("tx: ", tx)
+  await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/events`, {
+    method: 'POST',
+    body,
+  })
   return new Response('', { status: 200 })
 }

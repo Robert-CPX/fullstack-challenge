@@ -52,7 +52,6 @@ export const parseLogs = (payload: string) => {
   const parsedData: JSONData = JSON.parse(payload);
   const tx = parsedData.txs[0];
   const args = decodeArguments(tx.input);
-  console.log("parsedData:", parsedData, "args: ", args);
   return {
     "sender": tx.fromAddress,
     "recipient": tx.toAddress,
